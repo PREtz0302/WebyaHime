@@ -1,4 +1,4 @@
-package com.example.MiyanoHime;
+package com.example.WebyaHime;
 
 import java.time.LocalDateTime;
 

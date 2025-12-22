@@ -1,13 +1,13 @@
-package com.example.MiyanoHime;
+package com.example.WebyaHime;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MiyanoHimeApplication {
+public class WebyaHimeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MiyanoHimeApplication.class, args);
+		SpringApplication.run(WebyaHimeApplication.class, args);
 	}
 
 }
