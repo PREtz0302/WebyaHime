@@ -15,6 +15,7 @@ public class OverviewData {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	private boolean isDeleted;
 
 	private String title;
 	private LocalDateTime createdAt;
@@ -36,8 +37,9 @@ public class OverviewData {
 		this.title = title;
 		this.content = content;
 		this.category = StringUtils.hasText(category) ? category : "未設定";
+		this.isDeleted = false;
 
-		createdAt = LocalDateTime.now();
+		this.createdAt = LocalDateTime.now();
 	}
 
 	public Integer getId() {
@@ -58,6 +60,14 @@ public class OverviewData {
 
 	public String getCategory() {
 		return category;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 

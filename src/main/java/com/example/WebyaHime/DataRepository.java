@@ -8,5 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DataRepository extends JpaRepository<OverviewData, Integer> {
 
-	List<OverviewData> findByCategory(String category);
+	List<OverviewData> findByIsDeletedFalse();
+
+	List<OverviewData> findByCategoryAndIsDeletedFalse(String category);
 }

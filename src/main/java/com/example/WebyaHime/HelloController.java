@@ -23,11 +23,11 @@ public class HelloController {
 	@GetMapping("/list")
 	public List<DataSummary> getList(@RequestParam(required = false) String category) {
 		if(category == null || category.isEmpty()) {
-			return repository.findAll().stream()
+			return repository.findByIsDeletedFalse().stream()
 					.map(data -> new DataSummary(data.getId(), data.getTitle(), data.getCategory(), data.getCreatedAt()))
 					.toList();
 		}else {
-			return repository.findByCategory(category).stream()
+			return repository.findByCategoryAndIsDeletedFalse(category).stream()
 					.map(data -> new DataSummary(data.getId(), data.getTitle(), data.getCategory(), data.getCreatedAt()))
 					.toList();
 		}
@@ -53,8 +53,10 @@ public class HelloController {
 
 	@DeleteMapping("/list/{id}")
 	public String deleteData(@PathVariable int id) {
-		if(repository.existsById(id)) {
-			repository.deleteById(id);
+		OverviewData data = repository.findById(id).orElse(null);
+		if(data != null) {
+			data.setDeleted(true);
+			repository.save(data);
 			return "ID: " + id + " を削除しました。";
 		}else {
 			return "ID: " + id + " は見つかりませんでした。";
