@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,10 +21,16 @@ public class HelloController {
 
 
 	@GetMapping("/list")
-	public List<DataSummary> index() {
-		return repository.findAll().stream()
-				.map(data -> new DataSummary(data.getId(), data.getTitle(), data.getCreatedAt()))
-				.toList();
+	public List<DataSummary> getList(@RequestParam(required = false) String category) {
+		if(category == null || category.isEmpty()) {
+			return repository.findAll().stream()
+					.map(data -> new DataSummary(data.getId(), data.getTitle(), data.getCategory(), data.getCreatedAt()))
+					.toList();
+		}else {
+			return repository.findByCategory(category).stream()
+					.map(data -> new DataSummary(data.getId(), data.getTitle(), data.getCategory(), data.getCreatedAt()))
+					.toList();
+		}
 	}
 
 	@PostMapping("/list")
@@ -31,7 +38,8 @@ public class HelloController {
 
 		OverviewData newData = new OverviewData(
 				requestData.title(),
-				requestData.content()
+				requestData.content(),
+				requestData.category()
 		);
 
 		return repository.save(newData);
@@ -52,6 +60,5 @@ public class HelloController {
 			return "ID: " + id + " は見つかりませんでした。";
 		}
 	}
-
 
 }

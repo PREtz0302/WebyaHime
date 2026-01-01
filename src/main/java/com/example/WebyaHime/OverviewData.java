@@ -2,27 +2,13 @@ package com.example.WebyaHime;
 
 import java.time.LocalDateTime;
 
+import org.springframework.util.StringUtils;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-//public record OverviewData(
-//		int id,
-//		String title,
-//		LocalDateTime createdAt,
-//		String content
-//) {
-//	public OverviewData {
-//		if(title.isEmpty()) {
-//			throw new IllegalArgumentException("タイトルを設定してください。");
-//		}
-//
-//		if(content.length()>5000 || content.isEmpty()) {
-//			throw new IllegalArgumentException("概要欄は1~5000文字で登録してください。");
-//		}
-//	}
-//}
 
 @Entity
 public class OverviewData {
@@ -32,13 +18,25 @@ public class OverviewData {
 
 	private String title;
 	private LocalDateTime createdAt;
-	String content;
+	private String content;
+	private String category;
 
 	public OverviewData() {}
 
-	public OverviewData(String title, String content) {
+	public OverviewData(String title, String content, String category) {
+		if(!StringUtils.hasText(title)) {
+			throw new IllegalArgumentException("タイトルを設定してください。");
+		}
+		if(!StringUtils.hasText(content) || content.length()>5000) {
+			throw new IllegalArgumentException("概要欄は1~5000文字で登録してください");
+		}
+
+
+
 		this.title = title;
 		this.content = content;
+		this.category = StringUtils.hasText(category) ? category : "未設定";
+
 		createdAt = LocalDateTime.now();
 	}
 
@@ -56,6 +54,10 @@ public class OverviewData {
 
 	public String getContent() {
 		return content;
+	}
+
+	public String getCategory() {
+		return category;
 	}
 
 
